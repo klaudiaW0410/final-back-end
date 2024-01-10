@@ -128,7 +128,8 @@ export const bookSeats = asyncHandler(async (req, res) => {
 			rowArray.forEach((seatObject) => {
 				if (seatObject.seatIndex === seat[1]) {
 					seatToUpdate = seatObject
-					newSeatIndex = seatToUpdate.seatIndex - 1
+					// newSeatIndex = seatToUpdate.seatIndex - 1
+					// console.log(newSeatIndex)
 				}
 			})
 		})
@@ -145,14 +146,16 @@ export const bookSeats = asyncHandler(async (req, res) => {
 		try {
 			const updatedShowTime = await ShowTimeModel.findOneAndUpdate(
 				{ _id: existingShowtime._id },
-				{ $set: { [`seats.$[].${newSeatIndex}.selected`]: seatToUpdate.selected } },
+				{ $set: { [`seats.$[].$[xxx].selected`]: seatToUpdate.selected } },
+				{ arrayFilters: [
+					{ 'xxx.seatIndex': seat[1] }
+				]},
 				{ new: true }
 			)
 			res.status(200).json(updatedShowTime)
 		} catch (error) {
 			res.status(500).json({ error: 'Error updating the showtime.' });
 		}
-
 	} catch (error) {
 		res.status(500).json({ error: 'Something went wrong, please try again.' })
 	}
