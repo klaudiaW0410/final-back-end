@@ -199,6 +199,9 @@ export const updateShowtime = asyncHandler(async (req, res) => {
 	}
 })
 
+// @desc return Showtime of a certain movie using its movieId
+// @route /movie/:movieId
+// @access public
 export const getShowtimeByMovie = asyncHandler(async (req, res) => {
 	try {
 		const movieId = req.params.movieId
